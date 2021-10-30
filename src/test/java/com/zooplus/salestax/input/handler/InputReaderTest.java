@@ -13,22 +13,25 @@ public class InputReaderTest {
 
 	@Test
 	public void whenProvidedEmptyUserInput_ShouldReturnEmptyRecords() throws IOException {
-		List<String> userInput = null;
-		try (Reader fileReader = new FileReader("src/test/resources/EmptyInput.txt")) {
-			InputReader inputReader = new InputReader(fileReader);
-			userInput = inputReader.readInput();
-		}
+		List<String> userInput = readUserInput("src/test/resources/EmptyInput.txt");
+
 		assertEquals(0, userInput.size());
 	}
 
 	@Test
 	public void whenProvidedNonEmptyUserInput_ShouldRead() throws IOException {
+		List<String> userInput = readUserInput("src/test/resources/UserInput1.txt");
+
+		assertEquals(3, userInput.size());
+	}
+
+	private List<String> readUserInput(String path) throws IOException {
 		List<String> userInput = null;
-		try (Reader fileReader = new FileReader("src/test/resources/UserInput1.txt")) {
+		try (Reader fileReader = new FileReader(path)) {
 			InputReader inputReader = new InputReader(fileReader);
 			userInput = inputReader.readInput();
 		}
-		assertEquals(3, userInput.size());
+		return userInput;
 	}
 
 }

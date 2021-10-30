@@ -1,5 +1,9 @@
 package com.zooplus.salestax.input.handler;
 
+import static com.zooplus.salestax.utils.Constants.EXEMPTED_ITEMS;
+import static com.zooplus.salestax.utils.Constants.INVALID_INPUTS;
+import static com.zooplus.salestax.utils.Constants.VALID_INPUTS;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +14,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.zooplus.salestax.model.Item;
-import com.zooplus.salestax.utils.Constants;
 
 public class InputParser {
 
@@ -34,8 +37,8 @@ public class InputParser {
 			else
 				invalidInput.add(u);
 		});
-		inputMap.put(Constants.VALID_INPUTS, itemList);
-		inputMap.put(Constants.INVALID_INPUTS, invalidInput);
+		inputMap.put(VALID_INPUTS, itemList);
+		inputMap.put(INVALID_INPUTS, invalidInput);
 		return inputMap;
 	}
 
@@ -43,7 +46,7 @@ public class InputParser {
 		int quantity = Integer.parseInt(matcher.group(1));
 		String name = matcher.group(2);
 		boolean isImported = name.contains("imported");
-		boolean isExempted = Arrays.stream(properties.getProperty(Constants.EXEMPTED_ITEMS).split(","))
+		boolean isExempted = Arrays.stream(properties.getProperty(EXEMPTED_ITEMS).split(","))
 				.anyMatch(e -> name.contains(e.toLowerCase()));
 		double cost = Double.parseDouble(matcher.group(4));
 		itemList.add(new Item(quantity, name, cost, isImported, isExempted));

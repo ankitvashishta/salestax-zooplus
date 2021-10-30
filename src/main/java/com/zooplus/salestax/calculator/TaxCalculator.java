@@ -1,5 +1,10 @@
 package com.zooplus.salestax.calculator;
 
+import static com.zooplus.salestax.utils.Constants.BASIC_SALES_TAX;
+import static com.zooplus.salestax.utils.Constants.DECIMAL_FORMAT;
+import static com.zooplus.salestax.utils.Constants.IMPORTED_SALES_TAX;
+import static com.zooplus.salestax.utils.Constants.ROUND_OFF_FRACTION;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +13,6 @@ import java.util.Properties;
 import com.zooplus.salestax.model.BillAmount;
 import com.zooplus.salestax.model.Item;
 import com.zooplus.salestax.model.PurchasedItem;
-import com.zooplus.salestax.utils.Constants;
 
 public class TaxCalculator {
 
@@ -19,8 +23,8 @@ public class TaxCalculator {
 
 	public TaxCalculator(Properties properties) {
 		this.properties = properties;
-		df = new DecimalFormat(properties.getProperty(Constants.DECIMAL_FORMAT));
-		roundOffFraction = Integer.parseInt(properties.getProperty(Constants.ROUND_OFF_FRACTION));
+		df = new DecimalFormat(properties.getProperty(DECIMAL_FORMAT));
+		roundOffFraction = Integer.parseInt(properties.getProperty(ROUND_OFF_FRACTION));
 	}
 
 	public List<PurchasedItem> calculateTax(List<Item> itemList, BillAmount billAmount) {
@@ -30,36 +34,18 @@ public class TaxCalculator {
 	}
 
 	private void calculateCosts(List<Item> itemList, List<PurchasedItem> checkoutItems, BillAmount billAmount) {
-		double importedTaxRate = Double.parseDouble(properties.getProperty(Constants.IMPORTED_SALES_TAX));
-		double basicSalesTax = Double.parseDouble(properties.getProperty(Constants.BASIC_SALES_TAX));
+		double importedTaxRate = Double.parseDouble(properties.getProperty(IMPORTED_SALES_TAX));
+		double basicSalesTax = Double.parseDouble(properties.getProperty(BASIC_SALES_TAX));
 		itemList.stream().forEach(e -> {
 			if (e.isExempted() && e.isImported()) {
-				double cost = (e.getShelfPrice() * e.getQuantity());
-				double taxes = roundOffValues(cost * importedTaxRate / 100);
-				double totalCost = (cost + taxes);
-				checkoutItems.add(new PurchasedItem(e.getQuantity(), e.getName(), totalCost, df));
-				billAmount.setTotal((billAmount.getTotal() + totalCost));
-				billAmount.setSalesTaxes((billAmount.getSalesTaxes() + taxes));
+				calculateItemCost(e, importedTaxRate, 0, billAmount, checkoutItems);
 			} else if (e.isExempted()) {
-				double cost = (e.getShelfPrice() * e.getQuantity());
-				checkoutItems.add(new PurchasedItem(e.getQuantity(), e.getName(), cost, df));
-				billAmount.setTotal((billAmount.getTotal() + cost));
+				calculateItemCost(e, 0, 0, billAmount, checkoutItems);
 			} else if (e.isImported()) {
-				double cost = (e.getShelfPrice() * e.getQuantity());
-				double taxes = roundOffValues(cost * (importedTaxRate + basicSalesTax) / 100);
-				double totalCost = (cost + taxes);
-				checkoutItems.add(new PurchasedItem(e.getQuantity(), e.getName(), totalCost, df));
-				billAmount.setTotal((billAmount.getTotal() + totalCost));
-				billAmount.setSalesTaxes((billAmount.getSalesTaxes() + taxes));
+				calculateItemCost(e, importedTaxRate, basicSalesTax, billAmount, checkoutItems);
 			} else {
-				double cost = (e.getShelfPrice() * e.getQuantity());
-				double taxes = roundOffValues(cost * basicSalesTax / 100);
-				double totalCost = (cost + taxes);
-				checkoutItems.add(new PurchasedItem(e.getQuantity(), e.getName(), totalCost, df));
-				billAmount.setTotal((billAmount.getTotal() + totalCost));
-				billAmount.setSalesTaxes((billAmount.getSalesTaxes() + taxes));
+				calculateItemCost(e, 0, basicSalesTax, billAmount, checkoutItems);
 			}
-
 		});
 	}
 
@@ -67,9 +53,16 @@ public class TaxCalculator {
 		return ((double) Math.round(cost * roundOffFraction) / roundOffFraction);
 	}
 
-	/*
-	 * private double formatValues(double amount) { return
-	 * Double.parseDouble(df.format(amount)); }
-	 */
+	private void calculateItemCost(Item e, double importedTaxRate, double basicSalesTax, BillAmount billAmount,
+			List<PurchasedItem> checkoutItems) {
+		double cost = (e.getShelfPrice() * e.getQuantity());
+		double taxes = 0.0;
+		if (importedTaxRate != 0 || basicSalesTax != 0)
+			taxes = roundOffValues(cost * (importedTaxRate + basicSalesTax) / 100);
+		double totalCost = (cost + taxes);
+		checkoutItems.add(new PurchasedItem(e.getQuantity(), e.getName(), totalCost, df));
+		billAmount.setTotal((billAmount.getTotal() + totalCost));
+		billAmount.setSalesTaxes((billAmount.getSalesTaxes() + taxes));
+	}
 
 }
