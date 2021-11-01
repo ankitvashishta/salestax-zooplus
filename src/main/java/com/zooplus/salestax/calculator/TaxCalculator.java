@@ -14,6 +14,12 @@ import com.zooplus.salestax.model.BillAmount;
 import com.zooplus.salestax.model.Item;
 import com.zooplus.salestax.model.PurchasedItem;
 
+/**
+ * Calculate taxes and final bill amount for the purchased items.
+ * 
+ * @author ankit
+ *
+ */
 public class TaxCalculator {
 
 	private Properties properties;

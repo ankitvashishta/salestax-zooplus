@@ -15,6 +15,12 @@ import java.util.regex.Pattern;
 
 import com.zooplus.salestax.model.Item;
 
+/**
+ * Casts the user input strings to item objects.
+ * 
+ * @author ankit
+ *
+ */
 public class InputParser {
 
 	Properties properties;

@@ -24,7 +24,7 @@ import com.zooplus.salestax.utils.PropertiesReader;
 
 public class TaxCalculatorTest {
 
-	private static final String PROPERTIES_FILE_PATH = "src/test/resources/application.properties";
+	private static final String PROPERTIES_FILE_PATH = "application.properties";
 
 	private Properties properties;
 	DecimalFormat df;

@@ -20,7 +20,7 @@ import com.zooplus.salestax.utils.PropertiesReader;
 
 public class SalesTaxApplication {
 
-	private static final String PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
+	private static final String PROPERTIES_FILE_PATH = "application.properties";
 
 	public static void main(String args[]) {
 

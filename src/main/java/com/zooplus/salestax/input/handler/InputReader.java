@@ -5,6 +5,12 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reads the user input strings.
+ * 
+ * @author ankit
+ *
+ */
 public class InputReader {
 
 	private Reader reader;

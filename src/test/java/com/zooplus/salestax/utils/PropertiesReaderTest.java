@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class PropertiesReaderTest {
 
-	private static final String PROPERTIES_FILE_PATH = "src/test/resources/application.properties";
+	private static final String PROPERTIES_FILE_PATH = "application.properties";
 
 	@Test
 	public void testReadProperties() {
