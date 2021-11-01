@@ -24,6 +24,9 @@ public class SalesTaxApplication {
 
 	public static void main(String args[]) {
 
+		System.out.println("Please enter the user input in the following format :"
+				+ " \n<number_of_items> <description_of_items> <shelf_value>");
+
 		// Step 1. Read properties file.
 		Properties properties = new PropertiesReader().readProperties(PROPERTIES_FILE_PATH);
 
