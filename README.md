@@ -14,7 +14,7 @@ total sales taxes amount.<br>
 
 <h3>Solution</h3>
 <h6>Configurations</h6>
-Sales Tax Rate, Imported Tax Rate, Exempted Items as a comma separated list, Fraction to round up values and decimal format for output are configurable and can be updated in <b>src/main/resources/application.proerties</b> file.
+Sales Tax Rate, Imported Tax Rate, Exempted Items as a comma separated list, Fraction to round up values and decimal format for output are configurable and can be updated in <b>src/main/resources/application.properties</b> file.
 
 <h6>Testing</h6>
 User input is provided in text files in <b>src/test/resources</b> folder.
@@ -22,7 +22,9 @@ User input is provided in text files in <b>src/test/resources</b> folder.
 <h6>Execution</h6>
 This is a maven project compiled using jdk 11.<br>
 To run the application, execute the following command from the folder containing the jar file :<br>
-<b>java -jar salestax-zooplus-0.0.1-SNAPSHOT.jar</b>
+<b>java -jar salestax-zooplus-0.0.1-SNAPSHOT.jar</b><br>
+OR<br>
+If using an IDE, run the main class - <b>SalesTaxApplication.java</b>
 
 <h6>Assumptions</h6>
 The imported items contain the keyword imported.
